@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>李冲 - AI产品经理简历</title>
+<script>document.documentElement.classList.add('js');</script>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
   body{
@@ -12,9 +13,29 @@
     -webkit-font-smoothing:antialiased;
   }
   .page{
-    max-width:820px;margin:30px auto;background:#fff;
+    width:100%;max-width:1600px;margin:30px auto;background:#fff;
     box-shadow:0 4px 24px rgba(0,0,0,.1);border-radius:8px;overflow:hidden;
   }
+
+  /* ===== 入场与过渡动画 ===== */
+  html{scroll-behavior:smooth}
+  @keyframes fadeInUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+  @keyframes gradientFlow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+  /* 降级：仅在 JS 可用时隐藏初始态，避免无脚本环境白屏 */
+  .js .reveal{opacity:0;transform:translateY(28px);will-change:opacity,transform;
+    transition:opacity .7s cubic-bezier(.22,.61,.36,1),transform .7s cubic-bezier(.22,.61,.36,1)}
+  .js .reveal.in{opacity:1;transform:none}
+  /* header 背景缓慢流动，提升质感 */
+  .header{background-size:200% 200%;animation:gradientFlow 15s ease infinite}
+  /* 标题图标 hover 微动 */
+  .section-title .icon{transition:transform .35s cubic-bezier(.22,.61,.36,1),box-shadow .35s}
+  .section:hover .section-title .icon{transform:translateY(-2px) rotate(-6deg) scale(1.08);box-shadow:0 4px 14px rgba(15,52,96,.28)}
+  /* 证书图片 hover 轻放大，更生动 */
+  .cert-slide img{transition:transform .45s cubic-bezier(.22,.61,.36,1),box-shadow .45s}
+  .cert-slide .img-box:hover img{transform:scale(1.025)}
+  /* 卡片悬停更顺滑 */
+  .skill-card,.proj-item,.extra-card{transition:box-shadow .25s,transform .25s}
+
   /* ===== Header ===== */
   .header{
     background:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);
@@ -231,6 +252,8 @@
   /* Print */
   @media print{
     body{background:#fff;font-size:12px}
+    .js .reveal{opacity:1!important;transform:none!important;transition:none!important}
+    .header{animation:none!important}
     .page{box-shadow:none;margin:0;max-width:100%;border-radius:0}
     .header{padding:24px 30px 20px}
     .body{padding:20px 30px}
@@ -250,6 +273,16 @@
     .header-right .contact-item{justify-content:flex-start}
     .body{padding:20px}
     .header{padding:24px 20px}
+    .page{margin:0}
+    .cert-slide img{max-height:300px}
+  }
+  /* 宽屏自适应：随窗口变宽自动增加列数，避免卡片被拉伸过宽 */
+  @media(min-width:1100px){
+    .skills-grid,.extras-grid{grid-template-columns:repeat(3,1fr)}
+  }
+  @media(min-width:1500px){
+    .body{padding:32px 56px 40px}
+    .header{padding:40px 56px 34px}
   }
 </style>
 </head>
@@ -268,7 +301,7 @@
       <div class="contact-item">chongli@stu.xupt.edu.cn</div>
       <div class="contact-item">15769285219</div>
       <div class="contact-item">github.com/ChongLixupt</div>
-      <div class="contact-item">西安 · 可全国远程</div>
+      <div class="contact-item">西安 · 长安区</div>
       <div class="contact-item">男 / 2001 / 中共党员</div>
     </div>
   </div>
@@ -573,9 +606,9 @@
       <div class="extra-card">
         <div class="ex-title"><div class="dot"></div>技术影响力</div>
         <ul>
-          <li>运营公众号「小李」，定位AI Agent实战，撰写Harness Engineering、AgentScope等技术深度文章</li>
+          <li>运营公众号「智能体研习社」，定位AI Agent实战，撰写Harness Engineering、AgentScope等技术深度文章</li>
           <li>GitHub开源多个AI项目，Hugging Face在线Demo部署</li>
-          <li>CSDN博客（西邮彭于晏），分享AI工程化实践经验</li>
+          <li>CSDN博客（西邮彭于晏），分享AI工程化实践经验，访问量<strong>25万+</strong> </li>
         </ul>
       </div>
       <div class="extra-card">
@@ -683,6 +716,18 @@ function closeCertLightbox(){ const lb=document.getElementById("certLightbox"); 
 document.getElementById("certLbClose").addEventListener("click", e=>{ e.stopPropagation(); closeCertLightbox(); });
 document.getElementById("certLightbox").addEventListener("click", e=>{ if(e.target===e.currentTarget) closeCertLightbox(); });
 document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeCertLightbox(); });
+
+/* =================== 入场动画 reveal（依次淡入上移） =================== */
+(function(){
+  var els = document.querySelectorAll('.header, .body > .section');
+  [].forEach.call(els, function(el, i){
+    el.classList.add('reveal');
+    el.style.transitionDelay = (i * 0.09) + 's';
+  });
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){
+    [].forEach.call(document.querySelectorAll('.reveal'), function(el){ el.classList.add('in'); });
+  }); });
+})();
 </script>
 </body>
 </html>
